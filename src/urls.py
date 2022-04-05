@@ -21,10 +21,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from user import views as user_views
 
+from django.conf.urls import url
+from django.views.static import serve
 
 urlpatterns = [
+    url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
+    url(r'^user/static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
     path("admin/", admin.site.urls),
     path("", views.index, name="index"),
     path("user/", include("user.urls")),
     path("/", user_views.UploadView.as_view(), name="fileupload"),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
